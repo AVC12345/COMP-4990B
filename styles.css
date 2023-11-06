@@ -3,6 +3,20 @@ body::-webkit-scrollbar {
     display: none;
 }
 
+
+@keyframes gradient-bg {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  body {
+    background: linear-gradient(-45deg, #06312a, rgb(35, 39, 39), #0c507a, #4875b6);
+    background-size: 400% 400%;
+    animation: gradient-bg 10s ease infinite;
+  }
+  
+
+
 body {
     font-family: Arial, sans-serif;
     background-color: #26384a;
@@ -13,16 +27,29 @@ body {
     scrollbar-width: none;  /* Firefox */
 }
 
+
 .image-container {
     text-align: center;
     padding: 20px;
 }
 
+.image-container img:hover {
+    animation: logo-hover-animation 0.5s ease-in-out forwards;
+  }
+  @keyframes logo-hover-animation {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
 .title {
     text-align: center;
     color: #FFFFFF
     margin-top: 50px;
+     /* Glow effect */
+     text-shadow: 0 0 10px #00E5FF, 0 0 20px #00E5FF, 0 0 30px #00E5FF, 0 0 40px #00E5FF;
 }
+
+
 
 .input-container {
     width: 100%;
@@ -89,7 +116,7 @@ body {
     width: 0;
     background-color: #007BFF;
     border-radius: 5px;
-    transition: width 1s ease-in-out;
+    transition: width 1s ease-in-out; 
 }
 
 .progress-fill[data-progress="25"] {
@@ -133,3 +160,33 @@ body {
 .github-link:hover {
     color: black; /* Keeps the link color the same on hover */
 }
+
+
+/* Footer Styles */
+.site-footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 20px 0;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+  }
+  
+  .footer-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .footer-content p {
+    margin: 5px 0;
+  }
+  
+  /* Responsive footer */
+  @media (max-width: 600px) {
+    .footer-content {
+      flex-direction: column;
+    }
+  }
