@@ -1,237 +1,135 @@
-/* Reset default margin and padding */
-body, h1, h2, p, ul, ol, li {
+/* Hide scrollbar for Chrome, Safari and Opera */
+body::-webkit-scrollbar {
+    display: none;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #26384a;
+    color: #FFFFFF;
     margin: 0;
     padding: 0;
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
 }
 
-/* Set a base font size and line height for better readability */
-body {
-    font-size: 16px;
-    line-height: 1.6;
-}
-
-/* Use a custom font stack for better aesthetics */
-body {
-    font-family: 'Arial', sans-serif;
-}
-
-/* Set the background color to white */
-body {
-    background-color: #734b6d; /* White background color */
-}
-
-/* Center content vertically and horizontally */
-body {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh; /* Use min-height to center small content */
-}
-
-/* Add some spacing to the top title */
-.title {
-    font-size: 28px; /* Slightly larger title */
-    font-weight: bold;
-    animation: titleGlow 2s infinite alternate;
-    margin-top: 40px; /* Increase top margin for more space */
-    color: #000000; /* Black color */
-}
-
-/* Create a nice glow effect for the title */
-@keyframes titleGlow {
-    0% {
-        color: #1c171c;
-        text-shadow: 0 0 10px rgba(29, 3, 29, 0.8); /* Dark Purple */
-    }
-    100% {
-        color: #5f0658;
-        text-shadow: 0 0 10px rgba(158, 0, 142, 0.8); /* Dark Magenta */
-    }
-}
-
-/* Style the input container */
-.input-container {
+.image-container {
     text-align: center;
-    margin-bottom: 20px;
-    animation: glowAnimation 2s infinite alternate;
+    padding: 20px;
 }
 
-/* Apply a glow animation to the input container */
-@keyframes glowAnimation {
-    0% {
-        box-shadow: 0 0 20px rgba(128, 0, 128, 0.8);
-    }
-    100% {
-        box-shadow: 0 0 20px rgba(158, 0, 142, 0.8);
-    }
+.title {
+    text-align: center;
+    color: #FFFFFF
+    margin-top: 50px;
 }
 
+.input-container {
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+}
 
-
-/* Style the text input */
-input[type="text"] {
+#passwordField {
+    width: 100%;
     padding: 10px;
-    border: 1px solid #ccc;
+    border: 1px solid #ddd;
     border-radius: 5px;
-    width: 300px;
-    background-color: #ffffff;
+}
+
+#generateButton {
+    display: block;
+    width: 15%;
+    padding: 10px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 15px;
+    margin: 20px auto;
+    cursor: pointer;
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease 0s;
+}
+
+#generateButton:hover {
+    background-color: #084280;
+    box-shadow: 0px 15px 20px rgb(1, 52, 106);
+    color: #fff;
+    transform: translateY(-7px);
+}
+
+#generateButton:active {
+    box-shadow: 0 5px #666;
+    transform: translateY(4px);
+}
+
+#generateButton:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+#generateButton:disabled:hover {
+    background-color: #007BFF;
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+    transform: none;
 }
 
 
-
-
-/* Style the progress bar container */
 .progress-bar {
     width: 50%;
-    height: 20px;
-    background-color:#c6d4d4;
-    position: relative;
-    margin-top: 20px;
-    min-height: 20px;
-    border-radius: 10px;
-    overflow: hidden;
-    animation: glowAnimation 2s infinite alternate;
-}
-
-/* Style the progress bar fill */
-.progress-fill {
-    height: 100%;
-    background: linear-gradient(to right, #500080, #9e008e);
-    width: 0;
-    transition: width 0.3s;
-    border-radius: 10px;
-    box-sizing: border-box; /*Make sure padding and border are included in total width and height */
-} 
-
-
-/* Style the result text */
-.result {
-    margin-top: 10px;
-    font-weight: bold;
-    font-size: 18px;
-    text-align: center;
-    color: rgb(220, 183, 215);
-}
-
-/* Style the requirements text */
-.requirements {
-    text-align: left;
-    max-width: 300px;
+    background-color: #ddd;
+    border-radius: 5px;
     margin: 0 auto;
-    color: rgb(215, 176, 208);
+    display: none;
 }
 
-/* Responsive Styles for Mobile View */
-@media screen and (max-width: 600px) {
-    input[type="text"] {
-        width: 80%;
-    }
-
-    .requirements {
-        max-width: 100%;
-        padding: 10px;
-    }
-
-    .progress-bar {
-        min-height: 15px;
-    }
+.progress-fill {
+    height: 20px;
+    width: 0;
+    background-color: #007BFF;
+    border-radius: 5px;
+    transition: width 1s ease-in-out;
 }
 
-.image-container img {
-    height: 100px;
-    width: 120px;
-    height: auto; /* maintain the aspect ratio */
-   margin-top: -15px;
-    margin-bottom: -50px;  
-   
+.progress-fill[data-progress="25"] {
+    background-color: #FF0000; /* Red for 25% progress */
 }
 
+.progress-fill[data-progress="50"] {
+    background-color: #FFFF00; /* Yellow for 50% progress */
+}
 
+.progress-fill[data-progress="75"] {
+    background-color: #008000; /* Green for 75% progress */
+}
 
-body {
-    background-image: url('Back.webp'); /* replace with the path to your image */
-    background-repeat: no-repeat; /* Prevent image from repeating */
-    background-attachment: fixed; /* This will fix the background image to the viewport */
-    background-size: cover; /* This will make sure your image covers the whole page */
+.progress-fill[data-progress="100"] {
+    background-color: #0000FF; /* Blue for 100% progress */
 }
 
 
-.image-left,
-.image-right {
-    position: fixed; /* Fixed position */
-    top: 35%; /* Center vertically */
-    transform: translateY(-50%); /* Center vertically */
-    z-index: -1; /* Place it behind other elements, if necessary */
-}
-
-.image-left img,
-.image-right img {
-    max-height: 60vh; /* Prevent the image from being taller than the viewport */
-    width: auto; /* Maintain aspect ratio */
-    max-width: none; /* Allow the image to be as wide as it needs while respecting max-height */
-    margin-left: 10px;
-    margin-right: 10px;
-}
-
-.image-left {
-    left: 0; /* Position to the left */
-   
-}
-
-.image-right {
-    right: 0; /* Position to the right */
-    
+.result, .requirements {
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    width: 50%;
+    text-align: center;
+    display: none;
+    font-size: 20px; 
 }
 
 
-
-.footer {
-    position: fixed; /* Fix position to the bottom of the page */
-    left: 0;
-    bottom: 0;
-    width: 100%;
-    background-color: rgba(66, 23, 83, 0.8); 
-    color: white; /* White text color */
-    text-align: center; /* Center the content */
-    padding: 5px 0; /* Add some padding */
-    font-size: 1em; /* Set font size */
+.github-link {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    text-decoration: none; /* Removes underline */
+    color: black; /* Changes the link color */
+    display: flex; /* Makes the link a flex container */
+    align-items: center; /* Centers the text vertically */
 }
-
-/* Add an animation to the footer */
-.footer {
-    animation: footerFadeIn 1s ease-in-out forwards;
-}
-
-/* Create an animation for the footer */
-@keyframes footerFadeIn {
-    0% {
-        opacity: 0;
-    }
-    100% {
-        opacity: 1;
-    }
-}
-
-
-
-/* Add fixed background images to the top left and top right corners */
-.top-left-background-image, .top-right-background-image {
-    position: fixed;
-    top: 0;
-    width:20%;
-    z-index: -1;
-}
-
-.top-left-background-image {
-    left: 0;
-    width:20px;
-    background: url('pic3.jpg') no-repeat top left; 
-    background-size: contain;
-}
-
-.top-right-background-image {
-    right: 0;
-    background: url('pic4.jpg') no-repeat top right;
-    background-size: contain;
+.github-link:hover {
+    color: black; /* Keeps the link color the same on hover */
 }

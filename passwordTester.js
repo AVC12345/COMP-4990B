@@ -1,139 +1,240 @@
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", () => {
     const passwordInput = document.querySelector("input[type='text']");
     const resultDiv = document.querySelector(".result");
     const requirementsList = document.querySelector(".requirements");
     const progressBar = document.querySelector(".progress-bar");
 
-    passwordInput.addEventListener("input", async function() {
-        const password = passwordInput.value;
-        if (password.trim() === "") { //this condition checks if the string is empty
-            resultDiv.textContent = "";
-            requirementsList.innerHTML = "";
-            progressBar.style.display = "none";
+    passwordInput.addEventListener("input", async () => {
+        const password = passwordInput.value.trim();
+        if (password === "") {
+            resetUI();
         } else {
             progressBar.style.display = "block";
             const validationResult = await validatePassword(password);
-
-            if (validationResult.count == 0) {
-                resultDiv.textContent = "*** STRONG PASSWORD ***";
-                resultDiv.style.color = "green";
-                requirementsList.innerHTML = "";
-            } else if (validationResult.count < 4){
-                resultDiv.textContent = "MEDIUM STRENGTH PASSWORD";
-                resultDiv.style.color = "blue";
-                requirementsList.innerHTML = "";
-                requirementsList.style.color = "black";
-
-                for (const requirement of validationResult.unfulfilled) {
-                    const li = document.createElement("li");
-                    li.textContent = requirement;
-                    requirementsList.appendChild(li);
-                }
-
-                const progressPercent = calculateProgress(validationResult);
-                updateProgressBar(progressPercent);
-            }else{
-                resultDiv.textContent = "WEAK PASSWORD.";
-                resultDiv.style.color = "red";
-                requirementsList.innerHTML = "";
-                requirementsList.style.color = "#800080";
-
-                for (const requirement of validationResult.unfulfilled) {
-                    const li = document.createElement("li");
-                    li.textContent = requirement;
-                    requirementsList.appendChild(li);
-                }
-
-                const progressPercent = calculateProgress(validationResult);
-                updateProgressBar(progressPercent);
-            }
+            updateUI(validationResult);
         }
-
-
-        // if (validationResult.valid) {
-        //     resultDiv.textContent = "Password is valid!";
-        //     resultDiv.style.color = "green";
-        //     requirementsList.innerHTML = "";
-        // } else {
-        //     resultDiv.textContent = "Password is not valid.";
-        //     resultDiv.style.color = "red";
-        //     requirementsList.innerHTML = "";
-
-        //     for (const requirement of validationResult.unfulfilled) {
-        //         const li = document.createElement("li");
-        //         li.textContent = requirement;
-        //         requirementsList.appendChild(li);
-        //     }
-
-        //     const progressPercent = calculateProgress(validationResult);
-        //     updateProgressBar(progressPercent);
-        // }
     });
 
-    function calculateProgress(validationResult) {
-        const totalRequirements = 6; // Total number of requirements, including the new one
-        const fulfilledRequirements = totalRequirements - validationResult.unfulfilled.length;
+    function resetUI() {
+        resultDiv.textContent = "";
+        requirementsList.innerHTML = "";
+        progressBar.style.display = "none"; // This will hide the progress bar
+        resultDiv.style.display = "none"; // This will hide the result
+        requirementsList.style.display = "none"; // This will hide the requirements
+    }
+    
+    function calculateProgress(unfulfilledCount) {
+        const totalRequirements = 9;
+        const fulfilledRequirements = totalRequirements - unfulfilledCount;
         return (fulfilledRequirements / totalRequirements) * 100;
+    }
+    
+    function updateUI(validationResult) {
+        const { count, unfulfilled } = validationResult;
+        const progressPercent = calculateProgress(unfulfilled.length);
+        updateProgressBar(progressPercent);
+    
+        // These lines will show the progress bar, result, and requirements when the user enters text
+        progressBar.style.display = "block";
+        resultDiv.style.display = "block";
+        requirementsList.style.display = "block";
+    
+        if (count === 0) {
+            resultDiv.textContent = "*** STRONG PASSWORD ***";
+            resultDiv.style.color = "green";
+            requirementsList.innerHTML = "";
+        } else {
+            resultDiv.textContent = count < 5 ? "MEDIUM STRENGTH PASSWORD" : "WEAK PASSWORD.";
+            resultDiv.style.color = count < 5 ? "Green" : "Yellow";
+            requirementsList.style.color = count < 5 ? "Green" : "yellow";
+            requirementsList.innerHTML = unfulfilled.map(req => `<li>${req}</li>`).join("");
+        }
     }
     
     function updateProgressBar(percent) {
         const progressBar = document.querySelector(".progress-fill");
         progressBar.style.width = percent + "%";
+    
+        if (percent <= 25) {
+            progressBar.style.backgroundColor = "#FF0000"; // Red for 25% progress
+        } else if (percent <= 50) {
+            progressBar.style.backgroundColor = "#FFFF00"; // Yellow for 50% progress
+        } else if (percent <= 75) {
+            progressBar.style.backgroundColor = "#008000"; // Green for 75% progress
+        } else {
+            progressBar.style.backgroundColor = "#0000FF"; // Blue for 100% progress
+        }
     }
-
-    document.body.appendChild(resultDiv);
-    document.body.appendChild(requirementsList);
+    
 });
 
 async function validatePassword(password) {
     const unfulfilled = [];
-    var count = 0; 
+    let count = 0;
 
     if (password.length < 16) {
         unfulfilled.push("Password must be at least 16 characters long.");
-        count = count + 1;
+        count++;
     }
 
-    const capitalLetters = password.match(/[A-Z]/g) || [];
-    if (capitalLetters.length < 3) {
+    const capitalLetters = (password.match(/[A-Z]/g) || []).length;
+    if (capitalLetters < 3) {
         unfulfilled.push("Password must have at least 3 capital letters.");
-        count = count + 1;
+        count++;
     }
 
-    const uniqueNumbers = [...new Set(password.match(/\d/g))];
-    if (uniqueNumbers.length < 3) {
+    const uniqueNumbers = new Set(password.match(/\d/g)).size;
+    if (uniqueNumbers < 3) {
         unfulfilled.push("Password must have at least 3 different numbers.");
-        count = count + 1;
+        count++;
     }
 
-    const uniqueSpecialChars = [...new Set(password.match(/[^\w\s]/g))];
-    if (uniqueSpecialChars.length < 3) {
+    const uniqueSpecialChars = new Set(password.match(/[^\w\s]/g)).size;
+    if (uniqueSpecialChars < 3) {
         unfulfilled.push("Password must have at least 3 different special characters.");
-        count = count + 1;
+        count++;
     }
 
     if (/^[0-9\s\W]|[\s\W]$/.test(password)) {
         unfulfilled.push("Password cannot start or end with a number or special character.");
-        count = count + 1;
+        count++;
     }
 
-    const isEnglishWord = await checkIsEnglishWord(password);
-    if (isEnglishWord) {
-        unfulfilled.push("Password cannot containt full english words");
-        count = count + 1;
+    const words = password.split(/[^a-zA-Z]/);
+    for (const word of words) {
+        const isEnglishWord = await checkIsEnglishWord(word);
+        if (isEnglishWord) {
+            unfulfilled.push("Password cannot contain full English words");
+            count++;
+            break;
+        }
     }
 
-    
-    return {count: count, unfulfilled: unfulfilled};
+    const isPwnedPassword = await checkPwnedPassword(password);
+    if (isPwnedPassword) {
+        unfulfilled.push("Password has been compromised.");
+        count++;
+    }
+
+    if ((() => {
+        const len = password.length;
+        for (let windowSize = 1; windowSize <= len / 2; windowSize++) {
+            for (let i = 0; i <= len - 2 * windowSize; i++) {
+                const sequence = password.substr(i, windowSize);
+                const restOfString = password.substr(i + windowSize);
+                if (restOfString.includes(sequence)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    })()) {
+        unfulfilled.push("Password cannot have repeated sequences.");
+        count++;
+    }
+
+    const birthDatePattern = /\d{1,2}[-/]\d{1,2}[-/]\d{2,4}/;
+    if (birthDatePattern.test(password)) {
+        unfulfilled.push("Password cannot resemble a birth date.");
+        count++;
+    }
+
+    return { count, unfulfilled };
 }
+
 
 async function checkIsEnglishWord(word) {
-    try {
-        const response = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${word}`);
-        const data = await response.json();
-        return Array.isArray(data) && data.length > 0;
-    } catch (error) {
+    if (word.length <= 2) {
         return false;
     }
+    const response = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${word}`);
+    if (!response.ok) {
+        return false;
+    }
+    const data = await response.json();
+    return Array.isArray(data) && data.length > 0;
 }
+
+async function checkPwnedPassword(password) {
+    const sha1Password = CryptoJS.SHA1(password).toString(CryptoJS.enc.Hex);
+    const prefix = sha1Password.slice(0, 5);
+    const suffix = sha1Password.slice(5);
+    const response = await fetch(`https://api.pwnedpasswords.com/range/${prefix}`);
+    if (!response.ok) {
+        return false;
+    }
+    const data = await response.text();
+    const hashes = data.split('\r\n').map(line => line.split(':'));
+    return hashes.some(([hash, count]) => hash.toLowerCase() === suffix);
+}
+
+async function generatePassword() {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()';
+    let password = '';
+    let capitalLetters, uniqueNumbers, uniqueSpecialChars, birthDatePattern, repeatedSequence, isEnglishWord;
+
+    while (true) {
+        password = '';
+        for (let i = 0; i < 16; i++) {
+            password += chars[Math.floor(Math.random() * chars.length)];
+        }
+
+        capitalLetters = (password.match(/[A-Z]/g) || []).length;
+        uniqueNumbers = new Set(password.match(/\d/g)).size;
+        uniqueSpecialChars = new Set(password.match(/[^\w\s]/g)).size;
+        birthDatePattern = /\d{1,2}[-/]\d{1,2}[-/]\d{2,4}/;
+
+        repeatedSequence = false;
+        const len = password.length;
+        for (let windowSize = 1; windowSize <= len / 2; windowSize++) {
+            for (let i = 0; i <= len - 2 * windowSize; i++) {
+                const sequence = password.substr(i, windowSize);
+                const restOfString = password.substr(i + windowSize);
+                if (restOfString.includes(sequence)) {
+                    repeatedSequence = true;
+                    break;
+                }
+            }
+            if (repeatedSequence) break;
+        }
+
+        isEnglishWord = false;
+        const words = password.split(/[^a-zA-Z]/);
+        for (const word of words) {
+            isEnglishWord = await checkIsEnglishWord(word);
+            if (isEnglishWord) {
+                break;
+            }
+        }
+
+        if (password.length >= 16 &&
+            capitalLetters > 0 &&
+            uniqueNumbers >= 3 &&
+            uniqueSpecialChars >= 3 &&
+            !/^[0-9\s\W]|[\s\W]$/.test(password) &&
+            !birthDatePattern.test(password) &&
+            !repeatedSequence &&
+            !isEnglishWord) {
+            break;
+        }
+    }
+
+    return password;
+}
+
+document.getElementById('generateButton').addEventListener('click', async function() {
+    const button = document.getElementById('generateButton');
+    const passwordField = document.getElementById('passwordField');
+
+    // Disable the button
+    button.disabled = true;
+
+    // Generate the password
+    passwordField.value = await generatePassword();
+
+    // Enable the button
+    button.disabled = false;
+});
+
+
 
