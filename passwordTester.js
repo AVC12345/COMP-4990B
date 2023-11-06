@@ -53,18 +53,31 @@ document.addEventListener("DOMContentLoaded", () => {
     
     function updateProgressBar(percent) {
         const progressBar = document.querySelector(".progress-fill");
+        const passwordField = document.getElementById("passwordField"); // Get the password input field
+    
         progressBar.style.width = percent + "%";
+    
+        let borderColor = "#FFFFFF"; // Default border color
     
         if (percent <= 25) {
             progressBar.style.backgroundColor = "#FF0000"; // Red for 25% progress
+            borderColor = "#FF0000"; // Red border color
         } else if (percent <= 50) {
             progressBar.style.backgroundColor = "#FFFF00"; // Yellow for 50% progress
+            borderColor = "#FFFF00"; // Yellow border color
         } else if (percent <= 75) {
             progressBar.style.backgroundColor = "#008000"; // Green for 75% progress
+            borderColor = "#008000"; // Green border color
         } else {
             progressBar.style.backgroundColor = "#0000FF"; // Blue for 100% progress
+            borderColor = "#0000FF"; // Blue border color
         }
+        passwordField.style.borderWidth = "5px";
+        // Apply the border color to the password field
+        passwordField.style.borderColor = borderColor;
+        
     }
+    
     
 });
 
@@ -235,6 +248,4 @@ document.getElementById('generateButton').addEventListener('click', async functi
     // Enable the button
     button.disabled = false;
 });
-
-
 
