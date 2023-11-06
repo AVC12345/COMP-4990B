@@ -15,14 +15,14 @@ document.addEventListener("DOMContentLoaded", function() {
             const validationResult = await validatePassword(password);
 
             if (validationResult.count == 0) {
-                resultDiv.textContent = "Password is Strong!";
+                resultDiv.textContent = "*** STRONG PASSWORD ***";
                 resultDiv.style.color = "green";
                 requirementsList.innerHTML = "";
             } else if (validationResult.count < 4){
-                resultDiv.textContent = "Password is not stong enough.";
+                resultDiv.textContent = "MEDIUM STRENGTH PASSWORD";
                 resultDiv.style.color = "blue";
                 requirementsList.innerHTML = "";
-                requirementsList.style.color = "blue";
+                requirementsList.style.color = "black";
 
                 for (const requirement of validationResult.unfulfilled) {
                     const li = document.createElement("li");
@@ -33,9 +33,10 @@ document.addEventListener("DOMContentLoaded", function() {
                 const progressPercent = calculateProgress(validationResult);
                 updateProgressBar(progressPercent);
             }else{
-                resultDiv.textContent = "Password is very weak.";
+                resultDiv.textContent = "WEAK PASSWORD.";
                 resultDiv.style.color = "red";
                 requirementsList.innerHTML = "";
+                requirementsList.style.color = "#800080";
 
                 for (const requirement of validationResult.unfulfilled) {
                     const li = document.createElement("li");
