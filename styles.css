@@ -9,14 +9,8 @@ body::-webkit-scrollbar {
     50% { background-position: 100% 50%; }
     100% { background-position: 0% 50%; }
   }
-  body {
-    background: linear-gradient(-45deg, #06312a, rgb(35, 39, 39), #0c507a, #4875b6);
-    background-size: 400% 400%;
-    animation: gradient-bg 10s ease infinite;
-  }
   
-
-
+/* CSS for Desktop */
 body {
     font-family: Arial, sans-serif;
     background-color: #26384a;
@@ -25,8 +19,26 @@ body {
     padding: 0;
     -ms-overflow-style: none;  /* IE and Edge */
     scrollbar-width: none;  /* Firefox */
+    background: linear-gradient(-45deg, #06312a, rgb(35, 39, 39), #0c507a, #4875b6);
+    background-size: 400% 400%;
+    animation: gradient-bg 30s ease infinite;
 }
 
+/* CSS for Mobile */
+@media screen and (max-width: 600px) {
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #26384a;
+        color: #FFFFFF;
+        margin: 0;
+        padding: 0;
+        -ms-overflow-style: none;  /* IE and Edge */
+        scrollbar-width: none;  /* Firefox */
+        background: linear-gradient(-45deg, #06312a, rgb(35, 39, 39), #0c507a, #4875b6);
+        background-size: 400% 400%;
+        animation: gradient-bg 30s ease infinite;
+    }
+}
 
 .image-container {
     text-align: center;
@@ -139,7 +151,6 @@ body {
 .result, .requirements {
     margin: 20px auto;
     padding: 20px;
-    border: 1px solid #ddd;
     border-radius: 5px;
     width: 50%;
     text-align: center;
@@ -164,29 +175,22 @@ body {
 
 /* Footer Styles */
 .site-footer {
-    background-color: #333;
+    background-color: #111111;
     color: white;
     text-align: center;
     padding: 20px 0;
-    position: relative;
+    position: fixed;
     bottom: 0;
     width: 100%;
-  }
+}
   
-  .footer-content {
+.footer-content {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-  }
+}
   
-  .footer-content p {
+.footer-content p {
     margin: 5px 0;
-  }
-  
-  /* Responsive footer */
-  @media (max-width: 600px) {
-    .footer-content {
-      flex-direction: column;
-    }
-  }
+}
