@@ -18,9 +18,9 @@ document.addEventListener("DOMContentLoaded", () => {
     function resetUI() {
         resultDiv.textContent = "";
         requirementsList.innerHTML = "";
-        progressBar.style.display = "none"; // This will hide the progress bar
-        resultDiv.style.display = "none"; // This will hide the result
-        requirementsList.style.display = "none"; // This will hide the requirements
+        progressBar.style.display = "none"; 
+        resultDiv.style.display = "none"; 
+        requirementsList.style.display = "none"; 
     }
     
     function calculateProgress(unfulfilledCount) {
@@ -34,7 +34,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const progressPercent = calculateProgress(unfulfilled.length);
         updateProgressBar(progressPercent);
     
-        // These lines will show the progress bar, result, and requirements when the user enters text
+
         progressBar.style.display = "block";
         resultDiv.style.display = "block";
         requirementsList.style.display = "block";
@@ -53,27 +53,27 @@ document.addEventListener("DOMContentLoaded", () => {
     
     function updateProgressBar(percent) {
         const progressBar = document.querySelector(".progress-fill");
-        const passwordField = document.getElementById("passwordField"); // Get the password input field
+        const passwordField = document.getElementById("passwordField");
     
         progressBar.style.width = percent + "%";
     
-        let borderColor = "#FFFFFF"; // Default border color
+        let borderColor = "#FFFFFF";
     
         if (percent <= 25) {
-            progressBar.style.backgroundColor = "#FF0000"; // Red for 25% progress
-            borderColor = "#FF0000"; // Red border color
+            progressBar.style.backgroundColor = "#FF0000"; 
+            borderColor = "#FF0000";
         } else if (percent <= 50) {
-            progressBar.style.backgroundColor = "#FFFF00"; // Yellow for 50% progress
-            borderColor = "#FFFF00"; // Yellow border color
+            progressBar.style.backgroundColor = "#FFFF00"; 
+            borderColor = "#FFFF00"; 
         } else if (percent <= 75) {
-            progressBar.style.backgroundColor = "#008000"; // Green for 75% progress
-            borderColor = "#008000"; // Green border color
+            progressBar.style.backgroundColor = "#008000"; 
+            borderColor = "#008000"; 
         } else {
-            progressBar.style.backgroundColor = "#0000FF"; // Blue for 100% progress
-            borderColor = "#0000FF"; // Blue border color
+            progressBar.style.backgroundColor = "#0000FF"; 
+            borderColor = "#0000FF"; 
         }
         passwordField.style.borderWidth = "5px";
-        // Apply the border color to the password field
+        
         passwordField.style.borderColor = borderColor;
         
     }
@@ -108,10 +108,10 @@ async function validatePassword(password) {
         count++;
     }
 
-    if (/^[0-9\s\W]|[\s\W]$/.test(password)) {
+    if (/^[0-9]|[0-9\W]$/.test(password)) {
         unfulfilled.push("Password cannot start or end with a number or special character.");
         count++;
-    }
+    }    
 
     const words = password.split(/[^a-zA-Z]/);
     for (const word of words) {
@@ -239,13 +239,13 @@ document.getElementById('generateButton').addEventListener('click', async functi
     const button = document.getElementById('generateButton');
     const passwordField = document.getElementById('passwordField');
 
-    // Disable the button
+    
     button.disabled = true;
 
-    // Generate the password
+    
     passwordField.value = await generatePassword();
 
-    // Enable the button
+    
     button.disabled = false;
 });
 
